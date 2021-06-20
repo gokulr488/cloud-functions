@@ -1,0 +1,33 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "Trip",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "VehicleRegNo",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "BalanceAmount",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Trip",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "VehicleRegNo",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "StartDate",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

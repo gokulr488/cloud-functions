@@ -3,6 +3,8 @@ import * as admin from "firebase-admin";
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
+//firebase emulators:export db
+//firebase emulators:start --import db
 
 admin.initializeApp();
 
