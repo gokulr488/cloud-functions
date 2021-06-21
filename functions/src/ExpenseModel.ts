@@ -1,24 +1,20 @@
-// To parse this data:
-//
-//   import { Convert, ExpenseModel } from "./file";
-//
-//   const expenseModel = Convert.toExpenseModel(json);
+import * as admin from "firebase-admin";
 
 export interface ExpenseModel {
   expenseType?: string;
   amount?: number;
   odometerReading?: number;
-  fuelQty?: null;
-  payMode?: null;
-  policyNumber?: null;
-  taxExpiryDate?: null;
+  fuelQty?: number;
+  payMode?: String;
+  policyNumber?: number;
+  taxExpiryDate?: admin.firestore.Timestamp;
   tripNo?: string;
-  isFullTank?: null;
+  isFullTank?: boolean;
   vehicleRegNo?: string;
   driverName?: string;
-  fuelUnitPrice?: null;
-  insuranceExpiryDate?: null;
-  timestamp?: number;
+  fuelUnitPrice?: number;
+  insuranceExpiryDate?: admin.firestore.Timestamp;
+  timestamp: admin.firestore.Timestamp;
   expenseDetails?: string;
 }
 

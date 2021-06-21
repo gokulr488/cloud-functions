@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import { Convert } from "./ExpenseModel";
+import { ExpenseModel } from "./ExpenseModel";
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -15,8 +15,12 @@ export const expenseDocUpdated = functions.firestore
     const expenseDoc = change.after.data();
     if (expenseDoc != null) {
       console.log("Data: ", expenseDoc);
-      //var expense = Convert.toExpenseModel(expenseDoc);
-      //console.log(expense.timestamp);
+      var expense = expenseDoc as ExpenseModel;
+      if (previousMonthData(expense.timestamp)) {
+        console.log("Report Regenertion started");
+      } else {
+        console.log("Ignoring current month data");
+      }
     }
     return Promise.resolve();
   });
@@ -38,3 +42,26 @@ export const monthlyReport = functions.pubsub
     console.log("Monthly Report Generator");
     return Promise.resolve();
   });
+
+function getStartOfMonth(date: Date): number {
+  console.log("Today :", date);
+  var startDate: Date = new Date(date.getFullYear(), date.getMonth(), 1);
+  console.log(
+    "Start of month :",
+    startDate,
+    "timeStamp :",
+    startDate.getTime()
+  );
+  return startDate.getTime();
+}
+
+function previousMonthData(timeStamp: admin.firestore.Timestamp): boolean {
+  console.log(timeStamp);
+  var thisMonthStart: number = getStartOfMonth(new Date());
+  console.log("Millis: ", timeStamp.toMillis());
+  if (timeStamp.toMillis() < thisMonthStart) {
+    return true;
+  } else {
+    return false;
+  }
+}
