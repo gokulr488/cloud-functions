@@ -16,11 +16,6 @@ import * as monthlyReport from "./MonthlyReportGen";
 export async function genMonthlyReportForAllVehicles(): Promise<void> {
   var vehicles: VehicleModel[] = await monthlyReport.getAllVehicles();
   vehicles.forEach(function (vehicle) {
-    console.log(vehicle.RegistrationNo);
+    monthlyReport.generateReportFor(vehicle);
   });
-
-  // build reportID for each vehicle
-  // collect trips and expenses for the vehicle in previous month (find month start and end)
-  // generate report from trips and expenses
-  // write report doc
 }
