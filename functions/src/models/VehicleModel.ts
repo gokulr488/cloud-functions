@@ -1,9 +1,3 @@
-// To parse this data:
-//
-//   import { Convert, VehicleModel } from "./file";
-//
-//   const vehicleModel = Convert.toVehicleModel(json);
-
 export interface VehicleModel {
   VehicleName: string;
   RegistrationNo: string;
@@ -23,3 +17,12 @@ export const vehicleConverter = {
   fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) =>
     snap.data() as VehicleModel,
 };
+export function getVehiclesFrom(
+  snapShot: FirebaseFirestore.QuerySnapshot<VehicleModel>
+): VehicleModel[] {
+  var vehicles: VehicleModel[] = [];
+  snapShot.forEach(function (snap) {
+    vehicles.push(snap.data());
+  });
+  return vehicles;
+}

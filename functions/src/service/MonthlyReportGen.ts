@@ -1,18 +1,16 @@
 import * as admin from "firebase-admin";
-import { VehicleModel, vehicleConverter } from "../models/VehicleModel";
+import {
+  VehicleModel,
+  vehicleConverter,
+  getVehiclesFrom,
+} from "../models/VehicleModel";
 
 export async function getAllVehicles(): Promise<VehicleModel[]> {
-  var vehicles: VehicleModel[] = [];
-
   const snapShot = await admin
     .firestore()
     .collection("Vehicles")
     .withConverter(vehicleConverter)
     .get();
-
-  snapShot.forEach(function (snap) {
-    vehicles.push(snap.data());
-  });
-
+  var vehicles: VehicleModel[] = getVehiclesFrom(snapShot);
   return vehicles;
 }

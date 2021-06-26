@@ -27,13 +27,8 @@ export interface TripModel {
   isRoundTrip: boolean;
 }
 
-// Converts JSON strings to/from your types
-export class Convert {
-  public static toTripModel(json: string): TripModel {
-    return JSON.parse(json);
-  }
-
-  public static tripModelToJson(value: TripModel): string {
-    return JSON.stringify(value);
-  }
-}
+export const vehicleConverter = {
+  toFirestore: (data: TripModel) => data,
+  fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) =>
+    snap.data() as TripModel,
+};
