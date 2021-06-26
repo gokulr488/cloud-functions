@@ -2,11 +2,11 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import { ExpenseModel } from "./models/ExpenseModel";
 import * as utils from "./utils";
+import * as reportBuilder from "./service/ReportGeneratorService";
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
 //  firebase emulators:export db
 //  firebase emulators:start --import db
+//  npm run build
 
 admin.initializeApp();
 
@@ -36,6 +36,11 @@ export const tripDocUpdated = functions.firestore
     }
     return Promise.resolve();
   });
+
+export const monthlyReportTester = functions.https.onRequest((req, res) => {
+  console.log("Monthly Report Generator");
+  reportBuilder.genMonthlyReportForAllVehicles();
+});
 
 export const monthlyReport = functions.pubsub
   .schedule("0 0 1 * *")

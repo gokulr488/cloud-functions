@@ -9,11 +9,16 @@
 //combined yearly report  => 2021
 //vehicle yearly report   =>KL-01-BQ-4086_2021
 
-import * as admin from "firebase-admin";
+//import * as admin from "firebase-admin";
+import { VehicleModel } from "../models/VehicleModel";
+import * as monthlyReport from "./MonthlyReportGen";
 
-export function genMonthlyReportForAllVehicles(): void {
-  // get list of all vehicles
-  //iterate over each vehicle
+export async function genMonthlyReportForAllVehicles(): Promise<void> {
+  var vehicles: VehicleModel[] = await monthlyReport.getAllVehicles();
+  vehicles.forEach(function (vehicle) {
+    console.log(vehicle.RegistrationNo);
+  });
+
   // build reportID for each vehicle
   // collect trips and expenses for the vehicle in previous month (find month start and end)
   // generate report from trips and expenses
