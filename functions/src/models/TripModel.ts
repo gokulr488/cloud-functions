@@ -6,29 +6,39 @@
 
 export interface TripModel {
   id: string;
-  driverName: string;
-  driverUid: string;
-  startDate: number;
-  endDate: number;
-  startReading: number;
-  endReading: number;
-  distance: number;
-  billAmount: number;
-  paidAmount: number;
-  balanceAmount: number;
-  driverSalary: number;
-  customerName: string;
-  customerPhone: string;
-  tripNo: string;
-  vehicleRegNo: string;
-  startingFrom: string;
-  destination: string;
-  status: string;
-  isRoundTrip: boolean;
+  DriverName: string;
+  DriverUid: string;
+  StartDate: number;
+  EndDate: number;
+  StartReading: number;
+  EndReading: number;
+  Distance: number;
+  BillAmount: number;
+  PaidAmount: number;
+  BalanceAmount: number;
+  DriverSalary: number;
+  CustomerName: string;
+  CustomerPhone: string;
+  TripNo: string;
+  VehicleRegNo: string;
+  StartingFrom: string;
+  Destination: string;
+  Status: string;
+  IsRoundTrip: boolean;
 }
 
-export const vehicleConverter = {
+export const tripConverter = {
   toFirestore: (data: TripModel) => data,
   fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) =>
     snap.data() as TripModel,
 };
+
+export function getTripsFrom(
+  snapShot: FirebaseFirestore.QuerySnapshot<TripModel>
+): TripModel[] {
+  var trips: TripModel[] = [];
+  snapShot.forEach(function (snap) {
+    trips.push(snap.data());
+  });
+  return trips;
+}

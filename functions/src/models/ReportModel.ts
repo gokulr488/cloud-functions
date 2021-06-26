@@ -25,13 +25,17 @@ export interface ReportModel {
   otherCost?: number;
 }
 
-// Converts JSON strings to/from your types
-export class Convert {
-  public static toReportModel(json: string): ReportModel {
-    return JSON.parse(json);
-  }
-
-  public static reportModelToJson(value: ReportModel): string {
-    return JSON.stringify(value);
-  }
+export const reportConverter = {
+  toFirestore: (data: ReportModel) => data,
+  fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) =>
+    snap.data() as ReportModel,
+};
+export function getReportsFrom(
+  snapShot: FirebaseFirestore.QuerySnapshot<ReportModel>
+): ReportModel[] {
+  var reports: ReportModel[] = [];
+  snapShot.forEach(function (snap) {
+    reports.push(snap.data());
+  });
+  return reports;
 }

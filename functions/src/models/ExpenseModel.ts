@@ -18,13 +18,17 @@ export interface ExpenseModel {
   expenseDetails?: string;
 }
 
-// Converts JSON strings to/from your types
-export class Convert {
-  public static toExpenseModel(json: string): ExpenseModel {
-    return JSON.parse(json);
-  }
-
-  public static expenseModelToJson(value: ExpenseModel): string {
-    return JSON.stringify(value);
-  }
+export const expenseConverter = {
+  toFirestore: (data: ExpenseModel) => data,
+  fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) =>
+    snap.data() as ExpenseModel,
+};
+export function getExpensesFrom(
+  snapShot: FirebaseFirestore.QuerySnapshot<ExpenseModel>
+): ExpenseModel[] {
+  var expenses: ExpenseModel[] = [];
+  snapShot.forEach(function (snap) {
+    expenses.push(snap.data());
+  });
+  return expenses;
 }
