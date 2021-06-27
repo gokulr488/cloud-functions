@@ -9,6 +9,7 @@ export var OTHER_EXP = "Other Expense";
 export var COMPANIES = "Companies";
 export var VEHICLES = "Vehicles";
 export var USERS = "Users";
+export var REPORT = "Report";
 export var EXPENSE = "Expense";
 export var TRIP = "Trip";
 export var ADMIN = "Admin";

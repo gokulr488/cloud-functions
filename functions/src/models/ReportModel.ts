@@ -5,7 +5,7 @@
 //   const reportModel = Convert.toReportModel(json);
 
 export interface ReportModel {
-  reportId: String;
+  reportId: string;
   income: number;
   pendingBal: number;
   driverSal: number;

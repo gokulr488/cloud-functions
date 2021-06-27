@@ -13,6 +13,7 @@ import {
   getExpensesFrom,
 } from "../models/ExpenseModel";
 import * as Constants from "./Constants";
+import { writeReportDoc } from "./ReportApis";
 
 export async function getAllVehicles(): Promise<VehicleModel[]> {
   const snapShot = await admin
@@ -25,9 +26,7 @@ export async function getAllVehicles(): Promise<VehicleModel[]> {
 }
 
 export async function generateReportFor(vehicle: VehicleModel) {
-  // collect trips and expenses for the vehicle in previous month (find month start and end)
-  // write report doc
-  var reportID: String = utils.getReportID(vehicle.RegistrationNo);
+  var reportID: string = utils.getReportID(vehicle.RegistrationNo);
   console.log("Generating Report: ", reportID);
   var report = defaultReport;
   report.reportId = reportID;
@@ -41,6 +40,7 @@ export async function generateReportFor(vehicle: VehicleModel) {
     report = addExpenseToReport(expense, report);
   });
   console.log(report);
+  await writeReportDoc(report, vehicle.CompanyId);
   return report;
 }
 
