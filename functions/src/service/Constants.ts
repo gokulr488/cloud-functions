@@ -1,23 +1,21 @@
-class Constants {
-  static FUEL = "Fuel";
-  static SERVICE = "Service";
-  static REPAIR = "Repair";
-  static SPARE_PARTS = "Spare Parts";
-  static FINES = "Fines";
-  static DRIVER_SALARY = "Driver Salary";
-  static OTHER_EXP = "Other Expense";
+export var FUEL = "Fuel";
+export var SERVICE = "Service";
+export var REPAIR = "Repair";
+export var SPARE_PARTS = "Spare Parts";
+export var FINES = "Fines";
+export var DRIVER_SALARY = "Driver Salary";
+export var OTHER_EXP = "Other Expense";
 
-  static COMPANIES = "Companies";
-  static VEHICLES = "Vehicles";
-  static USERS = "Users";
-  static EXPENSE = "Expense";
-  static TRIP = "Trip";
-  static ADMIN = "Admin";
-  static DRIVER = "Driver";
-  static SUPERUSER = "SuperUser";
-  static ACTIVE = "Active";
-  static INACTIVE = "Inactive";
-  static STARTED = "Started";
-  static CANCELLED = "Cancelled";
-  static ENDED = "Ended";
-}
+export var COMPANIES = "Companies";
+export var VEHICLES = "Vehicles";
+export var USERS = "Users";
+export var EXPENSE = "Expense";
+export var TRIP = "Trip";
+export var ADMIN = "Admin";
+export var DRIVER = "Driver";
+export var SUPERUSER = "SuperUser";
+export var ACTIVE = "Active";
+export var INACTIVE = "Inactive";
+export var STARTED = "Started";
+export var CANCELLED = "Cancelled";
+export var ENDED = "Ended";

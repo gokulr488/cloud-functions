@@ -1,5 +1,5 @@
 import * as admin from "firebase-admin";
-import { ReportModel } from "../models/ReportModel";
+import { defaultReport, ReportModel } from "../models/ReportModel";
 import * as utils from "../utils";
 import {
   VehicleModel,
@@ -12,6 +12,7 @@ import {
   ExpenseModel,
   getExpensesFrom,
 } from "../models/ExpenseModel";
+import * as Constants from "./Constants";
 
 export async function getAllVehicles(): Promise<VehicleModel[]> {
   const snapShot = await admin
@@ -25,21 +26,19 @@ export async function getAllVehicles(): Promise<VehicleModel[]> {
 
 export async function generateReportFor(vehicle: VehicleModel) {
   // collect trips and expenses for the vehicle in previous month (find month start and end)
-  // generate report from trips and expenses
   // write report doc
   var reportID: String = utils.getReportID(vehicle.RegistrationNo);
   console.log("Generating Report: ", reportID);
-  var report = {} as ReportModel;
+  var report = defaultReport;
+  report.reportId = reportID;
   var trips: TripModel[] = await getLastMonthTripsFor(vehicle);
   trips.forEach((trip) => {
-    console.log(trip);
-    addTripToReport(trip, report);
+    report = addTripToReport(trip, report);
   });
-
+  console.log(report);
   var expenses: ExpenseModel[] = await getLastMonthExpensesFor(vehicle);
   expenses.forEach((expense) => {
-    console.log(expense);
-    addExpenseToReport(expense, report);
+    report = addExpenseToReport(expense, report);
   });
   console.log(report);
   return report;
