@@ -1,24 +1,19 @@
 import * as admin from "firebase-admin";
 import * as moment from "moment";
 
-export function getStartOfMonth(date: Date): number {
-  console.log("Today :", date);
+export function getStartOfMonth(date: Date): Date {
   var startDate: Date = new Date(date.getFullYear(), date.getMonth(), 1);
-  console.log(
-    "Start of month :",
-    startDate,
-    "timeStamp :",
-    startDate.getTime()
-  );
-  return startDate.getTime();
+  return startDate;
+}
+export function getEndOfMonth(date: Date): Date {
+  var endDate: Date = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  return endDate;
 }
 
 export function previousMonthData(
   timeStamp: admin.firestore.Timestamp
 ): boolean {
-  console.log(timeStamp);
-  var thisMonthStart: number = getStartOfMonth(new Date());
-  console.log("Millis: ", timeStamp.toMillis());
+  var thisMonthStart: number = getStartOfMonth(new Date()).getTime();
   if (timeStamp.toMillis() < thisMonthStart) {
     return true;
   } else {

@@ -1,15 +1,10 @@
-// To parse this data:
-//
-//   import { Convert, TripModel } from "./file";
-//
-//   const tripModel = Convert.toTripModel(json);
-
+import * as admin from "firebase-admin";
 export interface TripModel {
   id: string;
   DriverName: string;
   DriverUid: string;
-  StartDate: number;
-  EndDate: number;
+  StartDate: admin.firestore.Timestamp;
+  EndDate: admin.firestore.Timestamp;
   StartReading: number;
   EndReading: number;
   Distance: number;

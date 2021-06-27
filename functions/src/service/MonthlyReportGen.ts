@@ -31,11 +31,11 @@ export async function generateReportFor(vehicle: VehicleModel) {
   console.log("Generating Report: ", reportID);
   var report = defaultReport;
   report.reportId = reportID;
+
   var trips: TripModel[] = await getLastMonthTripsFor(vehicle);
   trips.forEach((trip) => {
     report = addTripToReport(trip, report);
   });
-  console.log(report);
   var expenses: ExpenseModel[] = await getLastMonthExpensesFor(vehicle);
   expenses.forEach((expense) => {
     report = addExpenseToReport(expense, report);
@@ -47,29 +47,40 @@ export async function generateReportFor(vehicle: VehicleModel) {
 async function getLastMonthTripsFor(
   vehicle: VehicleModel
 ): Promise<TripModel[]> {
+  var lastMonth = utils.getLastMonth();
+  var monthStart = utils.getStartOfMonth(lastMonth);
+  var monthEnd = utils.getEndOfMonth(lastMonth);
   const snapShot = await admin
     .firestore()
     .collection(Constants.COMPANIES)
     .doc(vehicle.CompanyId)
     .collection(Constants.TRIP)
     .withConverter(tripConverter)
-    //.where("StartDate",">=",)
+    .where("StartDate", ">=", monthStart)
+    .where("StartDate", "<=", monthEnd)
     .get();
   var trips: TripModel[] = getTripsFrom(snapShot);
+  console.log("Total Trip in ", lastMonth, " = ", trips.length);
   return trips;
 }
 
 async function getLastMonthExpensesFor(
   vehicle: VehicleModel
 ): Promise<ExpenseModel[]> {
+  var lastMonth = utils.getLastMonth();
+  var monthStart = utils.getStartOfMonth(lastMonth);
+  var monthEnd = utils.getEndOfMonth(lastMonth);
   const snapShot = await admin
     .firestore()
     .collection(Constants.COMPANIES)
     .doc(vehicle.CompanyId)
     .collection(Constants.EXPENSE)
     .withConverter(expenseConverter)
+    .where("timestamp", ">=", monthStart)
+    .where("timestamp", "<=", monthEnd)
     .get();
   var expenses: ExpenseModel[] = getExpensesFrom(snapShot);
+  console.log("Total Expenses in ", lastMonth, " = ", expenses.length);
   return expenses;
 }
 function addTripToReport(trip: TripModel, report: ReportModel): ReportModel {
