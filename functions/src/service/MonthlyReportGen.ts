@@ -16,7 +16,7 @@ import {
 export async function getAllVehicles(): Promise<VehicleModel[]> {
   const snapShot = await admin
     .firestore()
-    .collection("Vehicles")
+    .collection(Constants.VEHICLES)
     .withConverter(vehicleConverter)
     .get();
   var vehicles: VehicleModel[] = getVehiclesFrom(snapShot);
@@ -33,12 +33,15 @@ export async function generateReportFor(vehicle: VehicleModel) {
   var trips: TripModel[] = await getLastMonthTripsFor(vehicle);
   trips.forEach((trip) => {
     console.log(trip);
+    addTripToReport(trip, report);
   });
 
   var expenses: ExpenseModel[] = await getLastMonthExpensesFor(vehicle);
   expenses.forEach((expense) => {
     console.log(expense);
+    addExpenseToReport(expense, report);
   });
+  console.log(report);
   return report;
 }
 
@@ -47,10 +50,11 @@ async function getLastMonthTripsFor(
 ): Promise<TripModel[]> {
   const snapShot = await admin
     .firestore()
-    .collection("Companies")
+    .collection(Constants.COMPANIES)
     .doc(vehicle.CompanyId)
-    .collection("Trip")
+    .collection(Constants.TRIP)
     .withConverter(tripConverter)
+    //.where("StartDate",">=",)
     .get();
   var trips: TripModel[] = getTripsFrom(snapShot);
   return trips;
@@ -61,11 +65,55 @@ async function getLastMonthExpensesFor(
 ): Promise<ExpenseModel[]> {
   const snapShot = await admin
     .firestore()
-    .collection("Companies")
+    .collection(Constants.COMPANIES)
     .doc(vehicle.CompanyId)
-    .collection("Expense")
+    .collection(Constants.EXPENSE)
     .withConverter(expenseConverter)
     .get();
   var expenses: ExpenseModel[] = getExpensesFrom(snapShot);
   return expenses;
+}
+function addTripToReport(trip: TripModel, report: ReportModel): ReportModel {
+  report.income += trip.BillAmount ?? 0;
+  report.kmsTravelled += trip.Distance ?? 0;
+  report.driverSal += trip.DriverSalary ?? 0;
+  report.totalTrips++;
+
+  if (trip.BalanceAmount != null && trip.BalanceAmount > 0) {
+    report.pendingBal += trip.BalanceAmount;
+    report.pendingPayTrips++;
+  }
+  if (trip.Status == Constants.CANCELLED) {
+    report.cancelledTrips++;
+  }
+  return report;
+}
+
+function addExpenseToReport(
+  expense: ExpenseModel,
+  report: ReportModel
+): ReportModel {
+  report.expense += expense.amount ?? 0;
+  if (expense.expenseType == Constants.FUEL) {
+    report.fuelCost += expense.amount;
+    report.ltrs += expense.fuelQty;
+  }
+  if (expense.expenseType == Constants.SERVICE) {
+    report.serviceCost += expense.amount;
+    report.noOfService++;
+  }
+  if (expense.expenseType == Constants.REPAIR) {
+    report.repairCost += expense.amount;
+  }
+  if (expense.expenseType == Constants.SPARE_PARTS) {
+    report.spareCost += expense.amount;
+  }
+  if (expense.expenseType == Constants.FINES) {
+    report.fineCost += expense.amount;
+    report.noOfFines++;
+  }
+  if (expense.expenseType == Constants.OTHER_EXP) {
+    report.otherCost += expense.amount;
+  }
+  return report;
 }

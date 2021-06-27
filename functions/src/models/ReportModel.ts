@@ -5,24 +5,24 @@
 //   const reportModel = Convert.toReportModel(json);
 
 export interface ReportModel {
-  reportId?: string;
-  income?: number;
-  pendingBal?: number;
-  driverSal?: number;
-  expense?: number;
-  totalTrips?: number;
-  pendingPayTrips?: number;
-  cancelledTrips?: number;
-  kmsTravelled?: number;
-  fuelCost?: number;
-  ltrs?: number;
-  serviceCost?: number;
-  repairCost?: number;
-  spareCost?: number;
-  noOfService?: number;
-  noOfFines?: number;
-  fineCost?: number;
-  otherCost?: number;
+  reportId: string;
+  income: number;
+  pendingBal: number;
+  driverSal: number;
+  expense: number;
+  totalTrips: number;
+  pendingPayTrips: number;
+  cancelledTrips: number;
+  kmsTravelled: number;
+  fuelCost: number;
+  ltrs: number;
+  serviceCost: number;
+  repairCost: number;
+  spareCost: number;
+  noOfService: number;
+  noOfFines: number;
+  fineCost: number;
+  otherCost: number;
 }
 
 export const reportConverter = {

@@ -7,6 +7,7 @@ import * as reportBuilder from "./service/ReportGeneratorService";
 //  firebase emulators:export db
 //  firebase emulators:start --import db
 //  npm run build
+//  firebase deploy --only functions
 
 admin.initializeApp();
 
