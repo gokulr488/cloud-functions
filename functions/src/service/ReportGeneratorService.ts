@@ -11,6 +11,7 @@
 
 //import * as admin from "firebase-admin";
 import { ExpenseModel } from "../models/ExpenseModel";
+import { TripModel } from "../models/TripModel";
 import { VehicleModel } from "../models/VehicleModel";
 import * as monthlyReport from "./MonthlyReportGen";
 import * as reportRegen from "./ReportRegen";
@@ -28,4 +29,11 @@ export function regenReportWithExpense(
   companyId: string
 ) {
   reportRegen.regenReportWithExpense(before, after, companyId);
+}
+export function regenReportWithTrip(
+  before: TripModel,
+  after: TripModel,
+  companyId: string
+) {
+  reportRegen.regenReportWithTrip(before, after, companyId);
 }

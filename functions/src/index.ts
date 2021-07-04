@@ -3,13 +3,13 @@ import * as admin from "firebase-admin";
 import { ExpenseModel } from "./models/ExpenseModel";
 import * as utils from "./utils";
 import * as reportBuilder from "./service/ReportGeneratorService";
+import { TripModel } from "./models/TripModel";
 
 //"npm --prefix \"$RESOURCE_DIR\" run lint",
 //  firebase emulators:export db
 //  firebase emulators:start --import db
 //  npm run build
 //  firebase deploy --only functions
-//  asia-east2
 
 admin.initializeApp();
 
@@ -21,7 +21,7 @@ export const expenseDocUpdated = functions
     const beforeDoc = change.before.data() as ExpenseModel;
     if (afterDoc != null) {
       if (utils.previousMonthData(afterDoc.timestamp)) {
-        console.log("Report Regenertion started");
+        console.log("Report Regenertion started for Expense Update");
         reportBuilder.regenReportWithExpense(
           beforeDoc,
           afterDoc,
@@ -37,12 +37,20 @@ export const tripDocUpdated = functions
   .region("asia-east2")
   .firestore.document("Companies/{companyID}/Trip/{tripDocID}")
   .onUpdate((change, context) => {
-    const tripDoc = change.after.data;
-    if (tripDoc != null) {
-      console.log(tripDoc);
-      console.log(context.params.tripDocID);
+    const afterDoc = change.after.data() as TripModel;
+    const beforeDoc = change.before.data() as TripModel;
+    if (afterDoc != null) {
+      if (utils.previousMonthData(afterDoc.StartDate)) {
+        console.log("Report Regenertion started for Trip Update");
+        reportBuilder.regenReportWithTrip(
+          beforeDoc,
+          afterDoc,
+          context.params.companyID
+        );
+      } else {
+        console.log("Ignoring current month data");
+      }
     }
-    return Promise.resolve();
   });
 
 export const monthlyReportTester = functions
