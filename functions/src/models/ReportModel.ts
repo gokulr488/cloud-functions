@@ -35,7 +35,7 @@ export function getReportsFrom(
 ): ReportModel[] {
   var reports: ReportModel[] = [];
   snapShot.forEach(function (snap) {
-    reports.push(snap.data());
+    reports.push(snap.data() as ReportModel);
   });
   return reports;
 }
