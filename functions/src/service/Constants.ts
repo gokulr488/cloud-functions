@@ -5,6 +5,8 @@ export var SPARE_PARTS = "Spare Parts";
 export var FINES = "Fines";
 export var DRIVER_SALARY = "Driver Salary";
 export var OTHER_EXP = "Other Expense";
+export var TAX_EXP = "Tax Payment";
+export var INSURANCE_EXP = "Insurance Payment";
 
 export var COMPANIES = "Companies";
 export var VEHICLES = "Vehicles";

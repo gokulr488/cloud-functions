@@ -122,6 +122,12 @@ function addExpenseToReport(
     report.fineCost += expense.amount;
     report.noOfFines++;
   }
+  if (
+    expense.expenseType == Constants.TAX_EXP ||
+    expense.expenseType == Constants.INSURANCE_EXP
+  ) {
+    report.taxInsuranceCost += expense.amount;
+  }
   if (expense.expenseType == Constants.OTHER_EXP) {
     report.otherCost += expense.amount;
   }

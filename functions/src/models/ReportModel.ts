@@ -23,6 +23,7 @@ export interface ReportModel {
   noOfFines: number;
   fineCost: number;
   otherCost: number;
+  taxInsuranceCost: number;
 }
 
 export const reportConverter = {
@@ -58,4 +59,5 @@ export const defaultReport = {
   serviceCost: 0,
   spareCost: 0,
   totalTrips: 0,
+  taxInsuranceCost: 0,
 } as ReportModel;

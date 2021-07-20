@@ -40,6 +40,12 @@ function recalculateReport(
   if (beforeExp.expenseType == Constants.FINES) {
     report.fineCost += (afterExp.amount ?? 0) - (beforeExp.amount ?? 0);
   }
+  if (
+    beforeExp.expenseType == Constants.TAX_EXP ||
+    beforeExp.expenseType == Constants.INSURANCE_EXP
+  ) {
+    report.taxInsuranceCost += (afterExp.amount ?? 0) - (beforeExp.amount ?? 0);
+  }
   if (beforeExp.expenseType == Constants.OTHER_EXP) {
     report.otherCost += (afterExp.amount ?? 0) - (beforeExp.amount ?? 0);
   }
