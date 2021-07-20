@@ -7,7 +7,7 @@ import { TripModel } from "./models/TripModel";
 
 //"npm --prefix \"$RESOURCE_DIR\" run lint",
 //  firebase emulators:export db
-//  firebase emulators:start --import db
+//  firebase emulators:start --inspect-functions --import db
 //  npm run build
 //  firebase deploy --only functions
 
