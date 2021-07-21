@@ -53,10 +53,10 @@ export const tripDocUpdated = functions
     }
   });
 
-export const monthlyReportTester = functions
+export const monthlyReportBuilder = functions
   .region("asia-east2")
   .https.onRequest((req, res) => {
-    //http://localhost:5001/fleezy-7d63e/asia-east2/monthlyReportTester?date=21-Jul-2021
+    //http://localhost:5001/fleezy-7d63e/asia-east2/monthlyReportBuilder?date=21-Jul-2021
     if (req.query.date == undefined) {
       res.status(400).send("specify date eg:date=21-Jul-2021");
       return;
@@ -75,6 +75,13 @@ export const monthlyReportTester = functions
       res.status(200).send("OK");
     }
   });
+
+// export const cronTester = functions
+//   .region("asia-east2")
+//   .https.onRequest((req, res) => {
+//     reportBuilder.genMonthlyReportForAllVehicles(undefined);
+//     res.status(200).send("OK");
+//   });
 
 export const monthlyReport = functions
   .region("asia-east2")
