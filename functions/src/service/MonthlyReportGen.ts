@@ -1,5 +1,4 @@
 import * as admin from "firebase-admin";
-import { defaultReport, ReportModel } from "../models/ReportModel";
 import * as utils from "../utils";
 import {
   VehicleModel,
@@ -14,6 +13,7 @@ import {
 } from "../models/ExpenseModel";
 import * as Constants from "./Constants";
 import { writeReportDoc } from "./ReportApis";
+import { getDefaultReport, ReportModel } from "../models/ReportModel";
 
 export async function getAllVehicles(): Promise<VehicleModel[]> {
   const snapShot = await admin
@@ -25,17 +25,17 @@ export async function getAllVehicles(): Promise<VehicleModel[]> {
   return vehicles;
 }
 
-export async function generateReportFor(vehicle: VehicleModel) {
-  var reportID: string = utils.getReportID(vehicle.RegistrationNo);
+export async function generateReportFor(vehicle: VehicleModel, date: Date) {
+  var reportID: string = utils.getReportID(vehicle.RegistrationNo, date);
   console.log("Generating Report: ", reportID);
-  var report = defaultReport;
+  var report = getDefaultReport();
   report.reportId = reportID;
 
-  var trips: TripModel[] = await getLastMonthTripsFor(vehicle);
+  var trips: TripModel[] = await getTripsFor(vehicle, date);
   trips.forEach((trip) => {
     report = addTripToReport(trip, report);
   });
-  var expenses: ExpenseModel[] = await getLastMonthExpensesFor(vehicle);
+  var expenses: ExpenseModel[] = await getExpensesFor(vehicle, date);
   expenses.forEach((expense) => {
     report = addExpenseToReport(expense, report);
   });
@@ -44,12 +44,12 @@ export async function generateReportFor(vehicle: VehicleModel) {
   return report;
 }
 
-async function getLastMonthTripsFor(
-  vehicle: VehicleModel
+async function getTripsFor(
+  vehicle: VehicleModel,
+  date: Date
 ): Promise<TripModel[]> {
-  var lastMonth = utils.getLastMonth();
-  var monthStart = utils.getStartOfMonth(lastMonth);
-  var monthEnd = utils.getEndOfMonth(lastMonth);
+  var monthStart = utils.getStartOfMonth(date);
+  var monthEnd = utils.getEndOfMonth(date);
   const snapShot = await admin
     .firestore()
     .collection(Constants.COMPANIES)
@@ -60,16 +60,16 @@ async function getLastMonthTripsFor(
     .where("StartDate", "<=", monthEnd)
     .get();
   var trips: TripModel[] = getTripsFrom(snapShot);
-  console.log("Total Trip in ", lastMonth, " = ", trips.length);
+  console.log("Total Trip in ", date, " = ", trips.length);
   return trips;
 }
 
-async function getLastMonthExpensesFor(
-  vehicle: VehicleModel
+async function getExpensesFor(
+  vehicle: VehicleModel,
+  date: Date
 ): Promise<ExpenseModel[]> {
-  var lastMonth = utils.getLastMonth();
-  var monthStart = utils.getStartOfMonth(lastMonth);
-  var monthEnd = utils.getEndOfMonth(lastMonth);
+  var monthStart = utils.getStartOfMonth(date);
+  var monthEnd = utils.getEndOfMonth(date);
   const snapShot = await admin
     .firestore()
     .collection(Constants.COMPANIES)
@@ -80,7 +80,7 @@ async function getLastMonthExpensesFor(
     .where("timestamp", "<=", monthEnd)
     .get();
   var expenses: ExpenseModel[] = getExpensesFrom(snapShot);
-  console.log("Total Expenses in ", lastMonth, " = ", expenses.length);
+  console.log("Total Expenses in ", date, " = ", expenses.length);
   return expenses;
 }
 function addTripToReport(trip: TripModel, report: ReportModel): ReportModel {

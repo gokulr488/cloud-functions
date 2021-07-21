@@ -21,10 +21,9 @@ export function previousMonthData(
   }
 }
 
-export function getReportID(regNo: string): string {
+export function getReportID(regNo: string, date: Date): string {
   //KL-01-BQ-4086_MAY-2021
-  var lastMonth: Date = getLastMonth();
-  var reportId: string = regNo + "_" + moment(lastMonth).format("MMM-yyyy");
+  var reportId: string = regNo + "_" + moment(date).format("MMM-yyyy");
   return reportId;
 }
 

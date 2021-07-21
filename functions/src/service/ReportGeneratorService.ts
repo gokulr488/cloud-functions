@@ -15,11 +15,17 @@ import { TripModel } from "../models/TripModel";
 import { VehicleModel } from "../models/VehicleModel";
 import * as monthlyReport from "./MonthlyReportGen";
 import * as reportRegen from "./ReportRegen";
+import * as utils from "../utils";
 
-export async function genMonthlyReportForAllVehicles(): Promise<void> {
+export async function genMonthlyReportForAllVehicles(
+  date?: Date
+): Promise<void> {
+  if (date == undefined) {
+    date = utils.getLastMonth();
+  }
   var vehicles: VehicleModel[] = await monthlyReport.getAllVehicles();
   vehicles.forEach(function (vehicle) {
-    monthlyReport.generateReportFor(vehicle);
+    monthlyReport.generateReportFor(vehicle, date!);
   });
 }
 

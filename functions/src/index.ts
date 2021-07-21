@@ -56,8 +56,24 @@ export const tripDocUpdated = functions
 export const monthlyReportTester = functions
   .region("asia-east2")
   .https.onRequest((req, res) => {
-    console.log("Monthly Report Generator");
-    reportBuilder.genMonthlyReportForAllVehicles();
+    //http://localhost:5001/fleezy-7d63e/asia-east2/monthlyReportTester?date=21-Jul-2021
+    if (req.query.date == undefined) {
+      res.status(400).send("specify date eg:date=21-Jul-2021");
+      return;
+    } else {
+      const timeInMilli = Date.parse(req.query.date.toString());
+      const date = new Date(timeInMilli);
+      if (isNaN(timeInMilli) || timeInMilli < 1577840400000) {
+        res
+          .status(400)
+          .send(
+            "Invalid Date. Try eg:date=21-Jul-2021<BR>Date should be greater than 2020 Jan"
+          );
+        return;
+      }
+      reportBuilder.genMonthlyReportForAllVehicles(date);
+      res.status(200).send("OK");
+    }
   });
 
 export const monthlyReport = functions
@@ -65,5 +81,5 @@ export const monthlyReport = functions
   .pubsub.schedule("0 0 1 * *")
   .onRun((context) => {
     console.log("Monthly Report Generator");
-    reportBuilder.genMonthlyReportForAllVehicles();
+    reportBuilder.genMonthlyReportForAllVehicles(undefined);
   });

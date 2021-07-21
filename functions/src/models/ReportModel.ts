@@ -41,23 +41,26 @@ export function getReportsFrom(
   return reports;
 }
 
-export const defaultReport = {
-  cancelledTrips: 0,
-  driverSal: 0,
-  expense: 0,
-  fineCost: 0,
-  fuelCost: 0,
-  income: 0,
-  kmsTravelled: 0,
-  ltrs: 0,
-  noOfFines: 0,
-  noOfService: 0,
-  otherCost: 0,
-  pendingBal: 0,
-  pendingPayTrips: 0,
-  repairCost: 0,
-  serviceCost: 0,
-  spareCost: 0,
-  totalTrips: 0,
-  taxInsuranceCost: 0,
-} as ReportModel;
+export function getDefaultReport(): ReportModel {
+  var defaultReport = {
+    cancelledTrips: 0,
+    driverSal: 0,
+    expense: 0,
+    fineCost: 0,
+    fuelCost: 0,
+    income: 0,
+    kmsTravelled: 0,
+    ltrs: 0,
+    noOfFines: 0,
+    noOfService: 0,
+    otherCost: 0,
+    pendingBal: 0,
+    pendingPayTrips: 0,
+    repairCost: 0,
+    serviceCost: 0,
+    spareCost: 0,
+    totalTrips: 0,
+    taxInsuranceCost: 0,
+  } as ReportModel;
+  return defaultReport;
+}
