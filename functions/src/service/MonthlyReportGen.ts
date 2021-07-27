@@ -1,5 +1,5 @@
 import * as admin from "firebase-admin";
-import * as utils from "../utils";
+import * as utils from "./utils";
 import {
   VehicleModel,
   vehicleConverter,

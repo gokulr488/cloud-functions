@@ -15,7 +15,7 @@ import { TripModel } from "../models/TripModel";
 import { VehicleModel } from "../models/VehicleModel";
 import * as monthlyReport from "./MonthlyReportGen";
 import * as reportRegen from "./ReportRegen";
-import * as utils from "../utils";
+import * as utils from "./utils";
 
 export async function genMonthlyReportForAllVehicles(
   date?: Date

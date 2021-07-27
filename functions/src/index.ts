@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import { ExpenseModel } from "./models/ExpenseModel";
-import * as utils from "./utils";
+import * as utils from "./service/utils";
 import * as reportBuilder from "./service/ReportGeneratorService";
 import { TripModel } from "./models/TripModel";
 
